@@ -9,8 +9,6 @@ if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
 from isaacsim.simulation_app import SimulationApp
-from isaac_pbd_lab.app import PbdApp
-from isaac_pbd_lab.config import load_yaml_like
 
 
 def main():
@@ -30,6 +28,9 @@ def main():
         headless = True
 
     simulation_app = SimulationApp({"headless": headless})
+
+    from isaac_pbd_lab.app import PbdApp
+    from isaac_pbd_lab.config import load_yaml_like
 
     config_path = os.path.join(ROOT, "configs", "default.yaml")
     cfg = load_yaml_like(config_path)

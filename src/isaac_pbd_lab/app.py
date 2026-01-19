@@ -50,9 +50,18 @@ class PbdApp:
             except Exception:
                 self._timeline = None
         if self._timeline is not None:
-            dt = self._timeline.get_delta_time()
-            if dt and dt > 0:
-                return float(dt)
+            if hasattr(self._timeline, "get_delta_time"):
+                dt = self._timeline.get_delta_time()
+                if dt and dt > 0:
+                    return float(dt)
+            if hasattr(self._timeline, "get_time_codes_per_second"):
+                tps = self._timeline.get_time_codes_per_second()
+                if tps and tps > 0:
+                    return float(1.0 / tps)
+            if hasattr(self._timeline, "get_time_step"):
+                dt = self._timeline.get_time_step()
+                if dt and dt > 0:
+                    return float(dt)
         return float(self.config.get("fixed_dt", 1.0 / 60.0))
 
     def update(self, _e):
