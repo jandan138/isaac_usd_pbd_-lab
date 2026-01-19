@@ -18,7 +18,8 @@ def main():
     parser.add_argument("--headless-test", action="store_true", help="Run a short headless self-test and quit")
     parser.add_argument("--frames", type=int, default=300, help="Number of frames to run")
     parser.add_argument("--dt", type=float, default=None, help="Override dt for headless run")
-    parser.add_argument("--timeout", type=float, default=30.0, help="Max seconds before force quit")
+    parser.add_argument("--timeout", type=float, default=60.0, help="Max seconds before force quit")
+    parser.add_argument("--log-interval-frames", type=int, default=60, help="Print tail position every N frames in headless")
     args = parser.parse_args()
 
     headless = True
@@ -43,14 +44,20 @@ def main():
 
     dt = args.dt
     timeout = args.timeout
+    log_interval = max(1, int(args.log_interval_frames))
     start = time.time()
 
     if headless or args.headless_test:
-        for _ in range(frames):
+        for idx in range(frames):
             app.step_once(dt_override=dt)
             simulation_app.update()
+            if (idx + 1) % log_interval == 0:
+                tail = app.system.positions[-1]
+                print(f"[PBD] frame={idx + 1} tail=({tail[0]:.4f}, {tail[1]:.4f}, {tail[2]:.4f})")
             if time.time() - start > timeout:
                 break
+        tail = app.system.positions[-1]
+        print(f"[PBD] tail=({tail[0]:.4f}, {tail[1]:.4f}, {tail[2]:.4f})")
         simulation_app.close()
         return
 

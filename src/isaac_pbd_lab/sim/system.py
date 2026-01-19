@@ -8,7 +8,7 @@ from .vbd import solve_constraints_vbd
 
 class ParticleSystem:
     def __init__(self, n_particles, rest_length, gravity, radius, iterations,
-                 solver_type="pbd", compliance=0.0):
+                 solver_type="pbd", compliance=0.0, damping=0.0):
         self.n_particles = n_particles
         self.rest_length = rest_length
         self.gravity = np.array(gravity, dtype=np.float32)
@@ -16,6 +16,7 @@ class ParticleSystem:
         self.iterations = iterations
         self.solver_type = solver_type
         self.compliance = compliance
+        self.damping = float(damping)
 
         self.positions = np.zeros((n_particles, 3), dtype=np.float32)
         self.velocities = np.zeros((n_particles, 3), dtype=np.float32)
@@ -56,11 +57,19 @@ class ParticleSystem:
                 x_pred, self.inv_mass, self.constraints, self.iterations
             )
 
-        # simple ground projection
+        # simple ground projection (keep fixed particles anchored)
         x_pred[:, 1] = np.maximum(x_pred[:, 1], self.radius)
+        fixed_mask = self.inv_mass == 0.0
+        if np.any(fixed_mask):
+            x_pred[fixed_mask] = x_old[fixed_mask]
 
         # velocity update
         self.velocities[:] = (x_pred - x_old) / max(dt, 1e-6)
+
+        # simple velocity damping to reduce oscillation
+        if self.damping > 0.0:
+            damp_factor = max(0.0, 1.0 - self.damping * dt)
+            self.velocities *= damp_factor
 
         # write back
         self.positions[:] = x_pred

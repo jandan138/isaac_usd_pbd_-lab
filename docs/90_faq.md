@@ -22,3 +22,13 @@ A: 通常是第一次启动过程中抛错退出（或你手动重试），所�
 解决办法：
 - 已在代码中兼容 `get_time_codes_per_second()` / `get_time_step()`，没有该方法就回退到固定 $dt$。
 - 如果仍不确定，可在命令里显式传 `--dt`，或先运行 headless 测试确认启动正常。
+
+## Q: 链条看起来“贴地不动”或 anchor 位置漂移
+A: 之前的简单地面投影会把固定点（inv_mass=0）的 $y$ 也强行拉到地面，导致锚点漂移，链条整体被“拉平”。
+解决：地面投影后，固定粒子位置恢复到上一帧（保持 anchor 不动）。
+相关实现见 [src/isaac_pbd_lab/sim/system.py](../src/isaac_pbd_lab/sim/system.py)
+
+## Q: 链条一直来回大幅摆动（像两条线来回翻）
+A: 这是无阻尼的 PBD 行为，能量不会耗散，摆动会持续。
+解决：加速度阻尼（velocity damping）降低震荡。
+你可以在 [configs/default.yaml](../configs/default.yaml) 调整 `damping`，值越大越快稳定。

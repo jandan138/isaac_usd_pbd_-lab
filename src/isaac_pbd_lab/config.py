@@ -12,6 +12,7 @@ def default_config():
         "iterations": 20,
         "fixed_dt": 1.0 / 60.0,
         "compliance": 0.0,
+        "damping": 0.5,
         "prototype_path": "/World/Prototypes/Sphere",
         "instancer_path": "/World/Particles/Instancer",
         "rebuild_usd_prims": False,

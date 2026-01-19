@@ -28,6 +28,7 @@ class PbdApp:
             iterations=config["iterations"],
             solver_type=solver_type,
             compliance=config.get("compliance", 0.0),
+            damping=config.get("damping", 0.0),
         )
 
         self.instancer = build_pointinstancer(
