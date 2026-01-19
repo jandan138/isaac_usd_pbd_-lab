@@ -1,0 +1,11 @@
+# Basic config for PBD/XPBD/VBD demos
+n_particles: 50
+rest_length: 0.05
+radius: 0.02
+gravity: [0.0, -9.81, 0.0]
+iterations: 20
+fixed_dt: 0.0166667
+compliance: 0.0001
+prototype_path: /World/Prototypes/Sphere
+instancer_path: /World/Particles/Instancer
+rebuild_usd_prims: false

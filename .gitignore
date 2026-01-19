@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Isaac Sim / Kit
+*.log
+*.tmp
+
+# Outputs (recordings/screenshots/logs)
+outputs/
+
+# OS files
+.DS_Store
