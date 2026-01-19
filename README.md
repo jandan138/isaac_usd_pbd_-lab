@@ -25,10 +25,10 @@
 预期现象：一串小球组成的链条在重力下下垂摆动，第 0 个球固定不动。
 
 ## 快速开始（CLI）
-在 Isaac Sim 安装目录执行（示例）：
-- ./python.sh /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py
-- ./python.sh /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_xpbd_chain.py
-- ./python.sh /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_vbd_chain.py
+你是以 root 方式运行 Isaac Sim，因此 CLI 推荐使用 `isaac-sim.sh --allow-root` 并指定 python 脚本：
+- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py
+- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_xpbd_chain.py
+- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_vbd_chain.py
 
 ## 学习阶段路线（PBD → XPBD → VBD）
 ### Stage 1: PBD Chain
