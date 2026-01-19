@@ -1,11 +1,14 @@
 # 02 Run in CLI
 
-你是以 root 方式运行 Isaac Sim，因此在 Isaac Sim 安装目录执行：
+本页只保留**稳定可执行**的命令。不可稳定执行的命令与原因已移至
+[03_kit_simapp_and_run_modes.md](03_kit_simapp_and_run_modes.md)。
 
-- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py
-- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_xpbd_chain.py
-- /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_vbd_chain.py
+## 稳定运行（推荐）
+使用 Isaac Sim 自带 Python + `SimulationApp` 启动 Kit：
 
-说明：
-- 该方式会直接启动 Isaac Sim Kit，并运行指定脚本
-- 若报错缺少 omni 模块，请确认使用 `isaac-sim.sh --allow-root` 启动
+- /isaac-sim/python.sh /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain_python.py --headless-test
+- /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain_python.sh --headless-test
+
+如需 smoke 验证 Python 模式是否执行：
+
+- /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_headless_smoke_python.sh

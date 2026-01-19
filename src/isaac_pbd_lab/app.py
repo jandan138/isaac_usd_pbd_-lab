@@ -56,14 +56,17 @@ class PbdApp:
         return float(self.config.get("fixed_dt", 1.0 / 60.0))
 
     def update(self, _e):
+        self.step_once()
+
+    def step_once(self, dt_override=None):
         if not self.sim_running:
             return
 
-        dt = self._get_dt()
+        dt = float(dt_override) if dt_override is not None else self._get_dt()
         max_residual = self.system.step(dt)
         set_instancer_positions(self.instancer, self.system.positions)
 
-        should_log, fps, elapsed = self._timer.tick()
+        should_log, fps, _elapsed = self._timer.tick()
         if should_log:
             p0 = self.system.positions[0]
             log_info(

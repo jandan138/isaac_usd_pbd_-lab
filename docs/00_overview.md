@@ -12,4 +12,7 @@
 - 纯净依赖（只用 USD/omni/numpy）
 - 可复现运行（UI 与 CLI 两种方式）
 
+补充：
+- Kit 是 Isaac Sim 的程序内核/引擎。脚本中使用 `SimulationApp` 会启动 Kit，使 `omni.*` 模块可用。
+
 文档索引见 [docs/README.md](README.md)

@@ -25,10 +25,30 @@
 预期现象：一串小球组成的链条在重力下下垂摆动，第 0 个球固定不动。
 
 ## 快速开始（CLI）
+### Kit 是什么（通俗版）
+Kit 可以理解为 Isaac Sim 的“程序内核/引擎”。它负责加载插件、USD、渲染与事件循环。只有 Kit 启动后，`omni.*` 这些模块才可用。
+
+### 为什么 python.sh + SimulationApp 能启动
+`/isaac-sim/python.sh` 是 Isaac Sim 自带的 Python 环境。用它运行脚本时，脚本里的 `SimulationApp` 会主动启动 Kit，因此 Python 逻辑一定会被执行。
+
+### 如何启动（推荐）
+优先使用 Python 模式（可靠执行 Python 逻辑）：
+- /isaac-sim/python.sh /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain_python.py --headless-test
+- /cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain_python.sh --headless-test
+
 你是以 root 方式运行 Isaac Sim，因此 CLI 推荐使用 `isaac-sim.sh --allow-root` 并指定 python 脚本：
 - /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py
 - /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_xpbd_chain.py
 - /isaac-sim/isaac-sim.sh --allow-root --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_vbd_chain.py
+
+说明：在 headless 场景下 `pythonScript` 可能不触发，优先使用上面的 Python 模式。
+
+如果遇到“启动后无显示/不退出”，可用 headless 自检：
+- /isaac-sim/isaac-sim.sh --allow-root --no-window --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py --/app/args/--headless-test --/app/args/--frames=120 --/app/args/--dt=0.0166667 --/app/args/--timeout=30
+若参数未生效，使用兼容格式：
+- /isaac-sim/isaac-sim.sh --allow-root --no-window --/app/pythonScript=/cpfs/shared/simulation/zhuzihou/dev/isaac_usd_pbd_lab/scripts/run_pbd_chain.py --/app/args/headless-test=true --/app/args/frames=120 --/app/args/dt=0.0166667 --/app/args/timeout=30
+脚本内置强制退出保护：超过 `timeout+10s` 会强制结束进程。
+若要确认 Python 模式是否执行，运行 [scripts/run_headless_smoke_python.sh](scripts/run_headless_smoke_python.sh)。
 
 ## 学习阶段路线（PBD → XPBD → VBD）
 ### Stage 1: PBD Chain

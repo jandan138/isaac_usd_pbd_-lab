@@ -4,6 +4,7 @@
 - [00_overview.md](00_overview.md)
 - [01_run_in_ui.md](01_run_in_ui.md)
 - [02_run_in_cli.md](02_run_in_cli.md)
+- [03_kit_simapp_and_run_modes.md](03_kit_simapp_and_run_modes.md)
 - [10_pbd.md](10_pbd.md)
 - [11_xpbd.md](11_xpbd.md)
 - [12_vbd.md](12_vbd.md)
