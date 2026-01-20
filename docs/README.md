@@ -9,6 +9,7 @@
 - [11_xpbd.md](11_xpbd.md)
 - [12_vbd.md](12_vbd.md)
 - [20_experiments.md](20_experiments.md)
+- [21_pbd_code_walkthrough.md](21_pbd_code_walkthrough.md)
 - [90_faq.md](90_faq.md)
 
 ## 文档与代码同步建议
