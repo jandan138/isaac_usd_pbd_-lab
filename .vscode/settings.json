@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/scripts/python_isaacsim.sh",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/src"
+  ]
+}
