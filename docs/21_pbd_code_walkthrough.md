@@ -105,9 +105,33 @@ PBD 的核心思想是：
 - `iterations`：约束迭代次数（越大越“硬”）
 - `fixed_dt`：没有 timeline 时的步长
 - `damping`：阻尼，减少来回摆动
+- `prototype_path`：球体“模型模板”的路径
+- `instancer_path`：粒子“批量显示器”的路径
 
 ### 2) [src/isaac_pbd_lab/config.py](../src/isaac_pbd_lab/config.py)
 `load_yaml_like()` 会把 YAML 读成字典，然后传给 `PbdApp`。
+
+### 3) `prototype_path` 和 `instancer_path` 的通俗解释
+你可以把它想成“做饺子”：
+- **prototype_path** 是“模具”的位置（一个球体原型）。
+- **instancer_path** 是“机器”的位置（负责用这个模具批量做很多球）。
+
+在代码里发生的事情是：
+1. 先在 `prototype_path` 创建一个球（原型）。
+2. 再在 `instancer_path` 创建一个点实例器（PointInstancer）。
+3. 点实例器会“复用这个球”，在很多位置同时显示。
+
+为什么要这么做？
+- 如果每个粒子都建一个独立球体，慢而且占内存。
+- PointInstancer 只创建**一个**球，然后复制显示，效率高。
+
+所以这两个路径的作用是：
+- **告诉系统原型球放哪里**（prototype_path）
+- **告诉系统实例器放哪里**（instancer_path）
+
+**自检问题**：
+- 如果把 `prototype_path` 改成一个不存在的路径，会发生什么？
+- 如果把 `instancer_path` 改成别的路径，会影响显示的节点位置吗？
 
 **自检问题**：
 - 改 `damping` 会影响哪个文件里的哪行？
@@ -261,6 +285,37 @@ PBD 不一次求完，而是“多次拉回”。
 
 ### 3) 为什么固定点不动
 `inv_mass[0] = 0`，并且地面投影后固定点被回写。
+
+### 4) headless=false 会不会不 step？（超通俗版）
+不会。只是“谁来重复调用 step”的人不同。
+
+#### headless=true（无界面）
+你可以把它理解成：**脚本自己在不停点“下一步”**。
+
+一步步是这样：
+1. 进入 `for idx in range(frames)`
+2. 每一圈都执行 `app.step_once()`
+3. `step_once()` 里调用 `system.step()`
+4. `system.step()` 更新位置
+5. 回到循环，继续下一圈
+
+#### headless=false（有界面）
+你可以把它理解成：**交给 Isaac Sim 自己不停点“下一步”**。
+
+一步步是这样：
+1. 先调用 `app.start()`
+2. `app.start()` 把“每一帧要做什么”登记给 Isaac Sim
+3. Isaac Sim 每一帧都会执行这件事
+4. 这件事里会调用 `app.step_once()`
+5. `step_once()` 再调用 `system.step()` 更新位置
+
+#### 用大白话总结
+- headless=true：你自己拿着按钮，一帧一帧按。
+- headless=false：把按钮交给 Isaac Sim，它自己每帧按。
+
+**自检问题：**
+- headless=true 时，`app.step_once()` 是在 `for` 循环里被谁调用的？
+- headless=false 时，`app.start()` 做了什么“登记”？
 
 ---
 
